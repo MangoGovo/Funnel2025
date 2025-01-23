@@ -1,2 +1,2 @@
-# GoServerBase
-一个Go开发的Web服务框架
+# Funnel2025
+Funnel 于 2025 年的重构版本 
