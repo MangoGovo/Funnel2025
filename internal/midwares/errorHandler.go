@@ -2,10 +2,10 @@ package midwares
 
 import (
 	"errors"
-	"funnel/internal/apiException"
-	"funnel/internal/utils/response"
 	"net/http"
 
+	"funnel/internal/apiException"
+	"funnel/internal/utils/response"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )

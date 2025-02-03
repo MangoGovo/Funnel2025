@@ -1,12 +1,12 @@
 package response
 
 import (
-	"funnel/internal/apiException"
-	"funnel/pkg/log"
-	"go.uber.org/zap"
 	"net/http"
 
+	"funnel/internal/apiException"
+	"funnel/pkg/log"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // Json 返回json格式数据

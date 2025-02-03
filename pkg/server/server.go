@@ -3,13 +3,13 @@ package server
 import (
 	"context"
 	"errors"
-	"funnel/pkg/redis"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"funnel/pkg/redis"
 	"go.uber.org/zap"
 )
 
