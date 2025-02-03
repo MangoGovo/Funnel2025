@@ -1,4 +1,4 @@
-package apiException
+package exceptions
 
 import (
 	"net/http"
@@ -15,8 +15,11 @@ type Error struct {
 
 // ApiExceptions 表示自定义的错误类型
 var (
-	ServerError = NewError(200500, log.LevelError, "系统异常，请稍后重试!")
-	ParamsError = NewError(200501, log.LevelInfo, "参数错误")
+	ServerError  = NewError(200500, log.LevelError, "系统异常，请稍后重试!")
+	ParamsError  = NewError(200501, log.LevelInfo, "参数错误")
+	ZFError      = NewError(200502, log.LevelError, "正方异常，请稍后重试!")
+	ZFLoginError = NewError(200503, log.LevelError, "正方登录失败，请稍后重试!")
+	OauthError   = NewError(200599, log.LevelError, "统一异常，请稍后重试!")
 
 	NotFound = NewError(200404, log.LevelWarn, http.StatusText(http.StatusNotFound))
 )

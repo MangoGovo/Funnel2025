@@ -14,9 +14,14 @@ log:
   disableStacktrace: false # 是否禁用堆栈跟踪
   encoding: "json"         # 编码格式 json: json格式 console: 控制台格式
   level: "info"            # 日志级别 debug: 调试 info: 信息 warn: 警告 error: 错误 dpanic: 严重 panic: 恐慌 fatal: 致命
-  name: "example"          # 日志名称
-  writers: "console,file"  # 日志输出方式 console: 控制台 file: 文件
+  name: "funnel"          # 日志名称
+  writers: "all"           # 日志输出方式 console: 控制台 file: 文件
   loggerDir: "./logs"      # 日志目录
   logMaxSize: 10           # 单个日志文件最大大小 单位: MB
-  logMaxAge: 365             # 日志保留天数
+  logMaxAge: 365           # 日志保留天数
   logCompress: false       # 是否压缩日志文件
+
+preLogin:
+  produceFrequency: 5  # 预登录数据获取的频率(/%ds)
+  expireHours: 4       # 预登录数据缓存的过期时间
+  cacheCapacity: 50    # 缓存容量

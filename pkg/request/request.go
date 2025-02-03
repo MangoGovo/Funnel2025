@@ -3,6 +3,8 @@ package request
 
 import (
 	"crypto/tls"
+	"net/http"
+	"sync"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -15,29 +17,53 @@ type Client struct {
 	*resty.Client
 }
 
-// New 初始化一个 Resty 客户端
-func New() Client {
-	s := Client{
+var (
+	client           *Client
+	clientWithoutTLS *Client
+)
+
+func newClient() *Client {
+	c := &Client{
 		Client: resty.New().
+			SetHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36").
 			SetTimeout(5 * time.Second).
 			SetJSONMarshaler(jsoniter.ConfigCompatibleWithStandardLibrary.Marshal).
 			SetJSONUnmarshaler(jsoniter.ConfigCompatibleWithStandardLibrary.Unmarshal),
 	}
 	// 利用中间件实现请求日志
-	s.OnAfterResponse(RestyLogMiddleware)
-	return s
+	c.OnAfterResponse(RestyLogMiddleware)
+	return c
+}
+
+// New 初始化一个 Resty 客户端
+func New() *Client {
+	var once sync.Once
+	once.Do(func() {
+		client = newClient()
+	})
+
+	return client
+}
+
+// NewReqWithCookies 初始化一个携带 cookies 的 request 实例
+func NewReqWithCookies(cookies []*http.Cookie) *resty.Request {
+	return NewWithoutTLS().Request().SetCookies(cookies)
 }
 
 // NewWithoutTLS 初始化一个 Resty 客户端并跳过 TLS 证书验证
-func NewWithoutTLS() Client {
-	s := New()
-	s.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
-	return s
+func NewWithoutTLS() *Client {
+	var once sync.Once
+	once.Do(func() {
+		clientWithoutTLS = newClient()
+		clientWithoutTLS.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	})
+
+	return clientWithoutTLS
 }
 
 // Request 获取一个新的请求实例
-func (s Client) Request() *resty.Request {
-	return s.R().EnableTrace()
+func (c *Client) Request() *resty.Request {
+	return c.R().EnableTrace()
 }
 
 // RestyLogMiddleware Resty日志中间件

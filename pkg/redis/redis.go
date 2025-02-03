@@ -1,6 +1,8 @@
 package redis
 
 import (
+	"context"
+
 	"funnel/pkg/config"
 	_ "funnel/pkg/log"
 	"github.com/go-redis/redis/v8"
@@ -15,8 +17,12 @@ type redisConfig struct {
 	Password string
 }
 
-// GlobalClient 全局 Redis 客户端实例
-var GlobalClient *redis.Client
+var (
+	// Client 全局 Redis 客户端实例
+	Client *redis.Client
+	// Ctx 全局 redis 上下文
+	Ctx = context.Background()
+)
 
 // init 函数用于初始化 Redis 客户端和配置信息
 func init() {
@@ -27,11 +33,15 @@ func init() {
 		Password: config.Config.GetString("redis.pass"),
 	}
 
-	GlobalClient = redis.NewClient(&redis.Options{
+	Client = redis.NewClient(&redis.Options{
 		Addr:     info.Host + ":" + info.Port,
 		Password: info.Password,
 		DB:       info.DB,
 	})
-
+	_, err := Client.Ping(Ctx).Result()
+	if err != nil {
+		zap.L().Info("Redis初始化失败", zap.Error(err))
+		return
+	}
 	zap.L().Info("Redis初始化成功")
 }

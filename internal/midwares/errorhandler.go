@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"funnel/internal/apiException"
+	"funnel/internal/exceptions"
 	"funnel/internal/utils/response"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -21,14 +21,14 @@ func ErrHandler() gin.HandlerFunc {
 		if len(c.Errors) > 0 {
 			err := c.Errors.Last().Err
 			if err != nil {
-				var apiErr *apiException.Error
+				var apiErr *exceptions.Error
 
-				// 尝试将错误转换为 apiException
+				// 尝试将错误转换为 exceptions
 				ok := errors.As(err, &apiErr)
 
 				// 如果转换失败，则使用 ServerError
 				if !ok {
-					apiErr = apiException.ServerError
+					apiErr = exceptions.ServerError
 					zap.L().Error("遇到了未知的异常:", zap.Error(err))
 				}
 
@@ -41,7 +41,7 @@ func ErrHandler() gin.HandlerFunc {
 
 // HandleNotFound 处理 404 错误。
 func HandleNotFound(c *gin.Context) {
-	err := apiException.NotFound
+	err := exceptions.NotFound
 	// 记录 404 错误日志
 	zap.L().Warn("404 Not Found",
 		zap.String("path", c.Request.URL.Path),

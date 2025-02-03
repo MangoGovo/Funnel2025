@@ -18,6 +18,10 @@ func init() {
 		LogMaxSize:        config.Config.GetInt("log.logMaxSize"),         // 日志文件最大大小（单位：MB）
 		LogMaxAge:         config.Config.GetInt("log.logMaxAge"),          // 日志保存天数
 	}
+
+	if config.Config.GetBool("server.debug") {
+		zapInfo.ConsoleLevel = "debug"
+	}
 	logger, err := zapHelper.Init(&zapInfo)
 	if err != nil {
 		zap.L().Fatal(err.Error())

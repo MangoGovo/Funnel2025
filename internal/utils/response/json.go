@@ -3,7 +3,7 @@ package response
 import (
 	"net/http"
 
-	"funnel/internal/apiException"
+	"funnel/internal/exceptions"
 	"funnel/pkg/log"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -29,13 +29,13 @@ func JsonError(c *gin.Context, code int, msg string) {
 }
 
 // AbortWithException 用于返回自定义错误信息
-func AbortWithException(c *gin.Context, apiError *apiException.Error, err error) {
+func AbortWithException(c *gin.Context, apiError *exceptions.Error, err error) {
 	logError(c, apiError, err)
 	_ = c.AbortWithError(200, apiError) //nolint:errcheck
 }
 
 // logError 记录错误日志
-func logError(c *gin.Context, apiErr *apiException.Error, err error) {
+func logError(c *gin.Context, apiErr *exceptions.Error, err error) {
 	// 构建日志字段
 	logFields := []zap.Field{
 		zap.Int("error_code", apiErr.Code),

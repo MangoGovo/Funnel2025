@@ -1,28 +1,22 @@
 package main
 
 import (
-	"funnel/internal/midwares"
 	"funnel/internal/routers"
 	"funnel/pkg/config"
 	_ "funnel/pkg/log"
+	"funnel/pkg/schedule"
 	"funnel/pkg/server"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
+var debug = config.Config.GetBool("server.debug")
+var port = ":" + config.Config.GetString("server.port")
+
 func main() {
 	// TODO Health Check
-
-	// 如果配置文件中开启了调试模式
-	if !config.Config.GetBool("server.debug") {
+	if !debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	r := gin.Default()
-	r.Use(cors.Default())
-	r.Use(midwares.ErrHandler())
-	r.NoMethod(midwares.HandleNotFound)
-	r.NoRoute(midwares.HandleNotFound)
-	routers.Init(r)
-
-	server.Run(r, ":"+config.Config.GetString("server.port"))
+	schedule.Start()
+	server.Run(routers.R, port)
 }

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"funnel/pkg/redis"
+	"funnel/pkg/schedule"
 	"go.uber.org/zap"
 )
 
@@ -43,9 +44,12 @@ func Run(handler http.Handler, addr string) {
 	}
 
 	// 关闭 Redis 客户端
-	if err := redis.GlobalClient.Close(); err != nil {
+	if err := redis.Client.Close(); err != nil {
 		zap.L().Error("Redis客户端关闭失败", zap.Error(err))
 	}
+
+	// 关闭定时任务
+	schedule.Stop()
 
 	zap.L().Info("服务已关闭")
 }
