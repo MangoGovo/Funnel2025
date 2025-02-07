@@ -18,13 +18,14 @@ func Register(spec string, cmd func()) {
 	}
 }
 
+// Start 启动全局定时任务
 func Start() {
 	c.Start()
 	zap.L().Info("全局定时任务启动成功")
 }
 
+// Stop 停止全局定时任务
 func Stop() {
 	c.Stop()
 	zap.L().Info("全局定时任务已关闭")
-
 }

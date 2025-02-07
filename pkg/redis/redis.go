@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"funnel/pkg/config"
-	_ "funnel/pkg/log"
+	"funnel/pkg/log"
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
 )
@@ -40,8 +40,8 @@ func init() {
 	})
 	_, err := Client.Ping(Ctx).Result()
 	if err != nil {
-		zap.L().Info("Redis初始化失败", zap.Error(err))
+		log.L().Info("Redis初始化失败", zap.Error(err))
 		return
 	}
-	zap.L().Info("Redis初始化成功")
+	log.L().Info("Redis初始化成功")
 }

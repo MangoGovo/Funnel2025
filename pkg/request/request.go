@@ -18,8 +18,9 @@ type Client struct {
 }
 
 var (
-	client           *Client
-	clientWithoutTLS *Client
+	client                *Client
+	clientWithoutTLS      *Client
+	clientWithoutRedirect *Client
 )
 
 func newClient() *Client {
@@ -59,6 +60,18 @@ func NewWithoutTLS() *Client {
 	})
 
 	return clientWithoutTLS
+}
+
+// NewWithoutRedirect 初始化一个 Resty 客户端并不处理重定向
+func NewWithoutRedirect() *Client {
+	var once sync.Once
+	once.Do(func() {
+		clientWithoutRedirect = newClient()
+		clientWithoutRedirect.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+		clientWithoutRedirect.SetRedirectPolicy(resty.NoRedirectPolicy())
+	})
+
+	return clientWithoutRedirect
 }
 
 // Request 获取一个新的请求实例

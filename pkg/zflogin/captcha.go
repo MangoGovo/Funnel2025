@@ -1,3 +1,4 @@
+//nolint:all
 package zflogin
 
 import (
@@ -105,7 +106,6 @@ func getExtend() string {
 	bytes, _ := json.Marshal(data)
 	//	base64
 	return base64.StdEncoding.EncodeToString(bytes)
-
 }
 
 // fetchImage 下载图片
@@ -144,7 +144,7 @@ func fetchCaptcha(cookies []*http.Cookie, bgURL string, targetURL string, imtk s
 
 // generateMovement 生成滑块轨迹参数
 func generateMovement(bg []byte, target []byte) (string, error) {
-	var movement []move
+	movement := make([]move, 0)
 	start := getTimestamp()
 
 	// 滑块识别

@@ -6,6 +6,11 @@ import (
 	"go.uber.org/zap"
 )
 
+// L 获取全局 logger
+func L() *zap.Logger {
+	return zap.L()
+}
+
 func init() {
 	zapInfo := zapHelper.InfoConfig{
 		StacktraceLevel:   "warn",

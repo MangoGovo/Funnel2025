@@ -10,8 +10,6 @@ import (
 	"regexp"
 	"strconv"
 	"time"
-
-	_ "funnel/pkg/log"
 )
 
 func reExtract(pattern string, str string) string {
@@ -23,11 +21,11 @@ func reExtract(pattern string, str string) string {
 	return ""
 }
 
-func randomInt(min, max int) int {
-	return random.Intn(max-min) + min
+func randomInt(lower, upper int) int {
+	return lower + random.Intn(upper-lower+1)
 }
 
-func ExtractCSRFToken(html string) string {
+func extractCSRFToken(html string) string {
 	return reExtract(
 		`<input[^>]+id=\"csrftoken\"[^>]+value=\"([^\"]+)\"`,
 		html)

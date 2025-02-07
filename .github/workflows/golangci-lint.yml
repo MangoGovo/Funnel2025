@@ -24,7 +24,14 @@ jobs:
         with:
           go-version: stable
 
-      # 第三步：运行 golangci-lint
+      # 第三步：安装opencv
+      - name: Install OpenCV
+        run: |
+          sudo apt update
+          go get gocv.io/x/gocv
+          cd $GOPATH/src/gocv.io/x/gocv
+          make install
+      # 第四步：运行 golangci-lint
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6  # 使用 golangci-lint-action
         with:
