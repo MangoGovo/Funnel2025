@@ -1,4 +1,4 @@
-package zflogin
+package zfservice
 
 import (
 	"errors"

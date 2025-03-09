@@ -1,5 +1,5 @@
 //nolint:all
-package zflogin
+package zfservice
 
 import (
 	"encoding/base64"

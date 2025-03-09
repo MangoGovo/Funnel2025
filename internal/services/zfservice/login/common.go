@@ -1,10 +1,13 @@
-package zflogin
+package zfservice
 
-const (
-	baseURL    = "http://www.gdjw.zjut.edu.cn"
+import "funnel/pkg/config"
+
+var (
+	baseURL    = config.Config.GetString("zf.baseURL")
 	captchaURL = baseURL + "/jwglxt/zfcaptchaLogin"
 	loginURL   = baseURL + "/jwglxt/xtgl/login_slogin.html"
 	pubKeyURL  = baseURL + "/jwglxt/xtgl/login_getPublicKey.html"
+	checkURL   = baseURL + "/jwglxt/xtgl/index_cxYhxxIndex.html"
 )
 
 // captchaData 验证码信息
